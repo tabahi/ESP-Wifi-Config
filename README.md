@@ -132,11 +132,17 @@ Web pages can be edited in 'define_vars.h' where the PROGMEM constants are defin
 To change the content of webpages, change the html files then paste them as condensed strings in 'define_vars.h'.
 
 ## Screenshots
-![Preview](https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/1.png =200x)
-![Preview](https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/2.png =200x)
-![Preview](https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/3.png =200x)
-![Preview](https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/4.png =200x)
-![Preview](https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/5.png =200x)
-![Preview](https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/6.png =200x)
+
+<img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/1.png" alt="drawing" width="213"/>
+
+<img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/2.png" alt="drawing" width="250"/>
+
+<img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/3.png" alt="drawing" width="250"/>
+
+<img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/4.png" alt="drawing" width="250"/>
+
+<img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/5.png" alt="drawing" width="250"/>
+
+<img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/6.png" alt="drawing" width="213"/>
 
 
