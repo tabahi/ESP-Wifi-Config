@@ -72,10 +72,10 @@ boolean ensure_wifi_connectivity(unsigned long no_conn_go_wild_delay, unsigned l
   //Access point mode
   if (WifiConfig.ESP_mode == AP_MODE)  //Can't connect to internet while in this mode
   {
-    //Connect to the AP wifi name myESP_XXXXXX
+    //Connect to the AP wifi myESP_XXXXXX to configure it
   
 
-    //Added feature: Go wild after NO CONNECTION for a while
+    //Go wild after NO CONNECTION for a while
     //Try to connect to all password-less WiFis in range
     if (millis() > no_conn_go_wild_delay)
     {
@@ -133,7 +133,7 @@ To change the content of webpages, change the html files then paste them as cond
 
 ## Screenshots
 
-<img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/1.png" alt="drawing" width="213"/>
+<img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/1.png" alt="drawing" width="250"/>
 
 <img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/2.png" alt="drawing" width="250"/>
 
@@ -143,6 +143,6 @@ To change the content of webpages, change the html files then paste them as cond
 
 <img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/5.png" alt="drawing" width="250"/>
 
-<img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/6.png" alt="drawing" width="213"/>
+<img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/6.png" alt="drawing" width="250"/>
 
 
