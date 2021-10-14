@@ -31,7 +31,7 @@ void setup()
   Serial.begin(115200);
   delay(100);
 
-  //AP_MODE is activared when there is no wifi configuration in EEPROM memory and the fallback wifi is not found during scan
+  //AP_MODE is activated when there is no wifi configuration in EEPROM memory and the fallback wifi is not found during scan
   if (WifiConfig.initialize() == AP_MODE)
   {
     WifiConfig.Start_HTTP_Server(600000);
@@ -110,7 +110,7 @@ boolean ensure_wifi_connectivity(unsigned long no_conn_go_wild_delay, unsigned l
           //Try to connect to password-less WiFis after 1/2 hour of NO Wifi
           if (WifiConfig.goWild() > 0)
           {
-            // found some NEW unsecure WiFis. If they were found in previous scans, then it will still be zero
+            // found some NEW unsecured WiFis. If they were found in previous scans, then it will still be zero
             Serial.println("Connecting to open WiFi");
           }
         }
@@ -126,10 +126,7 @@ boolean ensure_wifi_connectivity(unsigned long no_conn_go_wild_delay, unsigned l
 
 `ESPWifiConfig` doesn't use SPIFF. It uses virtual EEPROM addresses 0-80 (flash) , which can be lost if compiler configurations are changed during update
 
-Web pages can be edited in 'define_vars.h' where the PROGMEM constants are defined.
-'define_vars.h' defines the is the condensed strings of all webpages.
-
-To change the content of webpages, change the html files then paste them as condensed strings in 'define_vars.h'.
+Web pages can be edited in 'define_vars.h' where the PROGMEM constants are defined as condensed strings. To change the content of webpages, change the html files then paste them as escaped strings in 'define_vars.h'.
 
 ## Screenshots
 
