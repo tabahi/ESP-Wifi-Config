@@ -1,5 +1,5 @@
 # ESP-Wifi-Config
- Easily manage/store WiFi credentials for ESP32 and ESP8266
+ An arduino IDE library to easily manage/store WiFi credentials for ESP32 and ESP8266.
 
 ## Usage
 
