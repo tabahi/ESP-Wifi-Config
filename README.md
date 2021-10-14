@@ -11,7 +11,7 @@ Default login: admin, pass_ESP
 - To reset the already known configurations, hold `Config_reset_btn` to `LOW` for 5 to 10 seconds when already in `CLIENT_MODE`. Add your own button mechanism on `Config_reset_btn` pin. It's not the power reset button. Or use  `WifiConfig.ESP_reset_settings()` to reset config memory, then `initialize()` again.
 
 
-- Use `WifiConfig.goWild()` to connect to password-less nearby WiFi. In the example, it's used as the last resort when the configured and fallback WiFis are not found. If there is still no WiFi connection then it will automatically Restart after an hour.
+- Use `WifiConfig.goWild()` to connect to any password-less WiFi in range. In the example, it's used as the last resort when the configured and fallback WiFis are not found. If there is still no WiFi connection then it will automatically Restart after an hour.
 
 
 
