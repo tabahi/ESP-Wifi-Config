@@ -1,0 +1,139 @@
+<html>
+	<head>
+	<title>RFID Catalogue</title>
+	<link href="../styles" rel="stylesheet">
+	
+	<style>
+		table {
+			border-top-bottom: 2px solid #B3B3B3;
+			border-collapse: collapse;
+		}
+		th, td {
+			border-bottom: 1px solid #ddd;
+			border-collapse: collapse;
+			padding: 8px;
+			text-align: left;
+		}
+		th {
+			background-color: #4CAF50;
+			color: white;
+		}
+		table#t01 {
+			width: 100%;    
+			background-color: #ffffff;
+			font-size: 12px;
+			color:#0D0D0D;
+			font-family: Arial;
+			Helvetica, sans-serif;
+			tr:hover {background-color: #f5f5f5}
+		}
+		tr:hover{background-color:#f5f5f5}
+	</style>
+	
+	</head>
+	<body style="background-color:#434343">
+	
+		<div id="topheader">
+			<h1 id="h1">Catalogue</h1>
+			<a href="../login?DISCONNECT=YES" style="float:right; margin-right: 10px; margin-top:25px; font-size: 14px; color:#666666 ">Logout</a>
+			<a href="../setup" style="float:right; margin-right: 10px; margin-top:25px; font-size: 14px; color:#666666 ">Setup</a>
+			<a href="" style="float:right; margin-right: 10px; margin-top:25px; font-size: 14px; color:#666666 ">Refresh</a>
+		</div>
+		
+		<div id="wrapper" style="margin: auto; margin-top:70px; overflow-x:auto;">
+		<table id="t01">
+		  <tr>
+			<th>Name</th>
+			<th>SMS Number</th>
+			<th>RFID</th> 
+			<th>Delete</th> 
+		  </tr>
+		</table>
+			
+		</div>
+		
+		
+		
+		
+		
+		
+		<script type="text/javascript" src="./readTable"></script>
+		<script type="text/javascript"> setTimeout(function() { loadTable() },100) </script>
+		<script>
+		var row_diff  = 0;
+		function loadTable()
+		{
+			var table = document.getElementById("t01");
+			row_diff = 0;
+			for(var i = 0; i < catalogue.length; i++) 
+			{
+				var obj = catalogue[i];
+				var total_row_num = i + 1;
+				var row = table.insertRow(total_row_num);
+				var name_cell = row.insertCell(0);
+				var sms_cell = row.insertCell(1);
+				var rfid_cell = row.insertCell(2);
+				var delete_cell = row.insertCell(3);
+
+				name_cell.innerHTML = obj.N;
+				sms_cell.innerHTML = obj.S;
+				var rfid_string = String(obj.R);
+				rfid_cell.innerHTML = rfid_string;
+				delete_cell.innerHTML = "<input class='b1' type='button' id='del_button' Value='Delete' onclick="delete_pressed('"+rfid_string+"', "+total_row_num+");\" ></input>";
+			}
+		}
+		</script>
+		
+		<script>
+		function delete_pressed(obj_rfid, row_num)
+		{
+			var delrfid = String(obj_rfid);
+			
+			
+			var rawFile = new XMLHttpRequest();
+			var get_params = "?drfid=" + delrfid;
+			rawFile.open("GET", "./delete" + get_params, true);
+			rawFile.send(null);
+			rawFile.onreadystatechange = function ()
+			{
+				if(rawFile.readyState === 4)
+				{
+					if(rawFile.status === 200 || rawFile.status == 0)
+					{
+						if(rawFile.responseText.indexOf("Deleted")>=0)
+						{
+							alert(rawFile.responseText);
+							var table = document.getElementById("t01");
+							var now_diff = row_num - row_diff;
+							if(now_diff==0)
+							{
+								now_diff = 1;
+							}
+							table.deleteRow(now_diff);
+							row_diff++;
+						}
+						else
+						{
+							alert("ERROR:49");
+						}
+					}
+					else
+					{
+						alert("ERROR:48");
+					}
+				}
+			}
+			
+			
+			
+		}
+		
+		</script>
+		
+		
+		
+		
+     
+
+	</body>
+</html>

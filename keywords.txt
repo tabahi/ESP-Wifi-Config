@@ -1,0 +1,31 @@
+#######################################
+# Syntax Coloring Map For ESP8266webadmin
+
+#######################################
+# Datatypes (KEYWORD1)
+
+WifiConfig	KEYWORD1
+ESPWifiConfig 	KEYWORD2
+
+#######################################
+# Methods and Functions (KEYWORD2)
+
+Start_HTTP_Server	KEYWORD2
+handle	KEYWORD2
+ESP_debug	KEYWORD2
+initialize	KEYWORD2
+print_settings	KEYWORD2
+goWild	KEYWORD2
+ESP_reset_settings	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+
+#######################################
+# Constants (LITERAL1)
+
+wifi_connected	KEYWORD2
+ESP_mode	KEYWORD2
+input	KEYWORD2
+
+

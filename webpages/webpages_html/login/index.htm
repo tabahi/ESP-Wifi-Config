@@ -1,0 +1,50 @@
+<html>
+	<head>
+	<title>Login</title>
+	<link href="../styles" rel="stylesheet">
+	
+	
+	</head>
+	<body style="background-color:#434343">
+	
+		<div id="topheader">
+			<h1 id="h1">Login</h1>
+		</div>
+		
+		<div id="wrapper" style="background-color:#E0E0E0; margin: auto; margin-top:70px; width: 40%; border: 3px solid #e5e5e5; padding: 10px; border-radius: 12px;">
+			<p style="font-size: 14px; color:#f48942; font-family: Arial, Helvetica, sans-serif;" id="msg"></p>
+				<table class="tableall">
+				<form action="" method="POST" id="loginform">
+					<tr>
+					<td class="tableleft">Username:</td>
+					<td class="tableright">
+					<input type="text" name="USERNAME" id="USERNAME" placeholder="Username" required pattern="^[^; ]+$">
+					</td>
+					</tr>
+					<tr>
+					<td class="tableleft">Password:</td>
+					<td class="tableright">
+					<input type="password" name="PASSWORD" id="PASSWORD" placeholder="Password" pattern="^[^; ]+$"><br></td>
+					</tr>
+					<tr>
+					<td class="tableleft"></td>
+					<td class="tableright"><button type="submit" class="b1" value="Submit">Log In</button><br></td>
+					</tr>
+				</form>
+				</table>
+			
+			
+			
+		</div>
+		
+		
+		<script src="../error"></script>
+		<script>
+		  console.log(msg);
+		  document.getElementById("msg").innerHTML = msg;
+		</script>
+		
+		
+
+	</body>
+</html>
