@@ -24,6 +24,7 @@ See the `examples\ensureWiFi.ino` for a complete example.
 
 #include <ESPWifiConfig.h>
 int Config_reset_btn = 0; //GPIO0, D0 on Node32, D3 on NodeMCU8266. Pressing this button for more than 5-10sec will reset the WiFi configuration
+boolean debug = true; //prints info on Serial when true
 
 ESPWifiConfig WifiConfig("myESP", 80, Config_reset_btn, false, "fallback_wifi", "fallback_pass", debug_true);
 
@@ -48,6 +49,12 @@ void setup()
 }
 
 
+
+#define NO_CONNECTION_RESTART_DELAY 3600000 //ms, 1 hour
+#define NO_CONNECTION_GO_WILD_DELAY 1800000 //ms, 30 minutes
+
+
+
 void loop()
 {
   //non-blocking function, 'reconnect_delay' is an interval for reconnection if disconnected
@@ -66,6 +73,8 @@ void loop()
 }
 
 
+unsigned long last_wifi_connect_time = 0;
+unsigned long reconnect_delay = 10000;
 
 
 boolean ensure_wifi_connectivity(unsigned long no_conn_go_wild_delay, unsigned long no_conn_restart_delay)
@@ -125,7 +134,7 @@ boolean ensure_wifi_connectivity(unsigned long no_conn_go_wild_delay, unsigned l
 ## Editing
 
 
-`ESPWifiConfig` doesn't use SPIFF. It uses virtual EEPROM addresses 0-80 (flash) , which can be lost if compiler configurations are changed during update
+`ESPWifiConfig` doesn't use SPIFF. It uses virtual EEPROM addresses 0-80 (flash) , which can be lost if compiler configurations are changed during update.
 
 Web pages can be edited in 'define_vars.h' where the PROGMEM constants are defined as condensed strings. To change the content of webpages, change the html files then paste them as escaped strings in 'define_vars.h'.
 
