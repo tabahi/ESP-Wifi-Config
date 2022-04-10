@@ -23,6 +23,7 @@ See the `examples\ensureWiFi.ino` for a complete example.
 ```cpp
 
 #include <ESPWifiConfig.h>
+int Config_reset_btn = 0; //GPIO0, D0 on Node32, D3 on NodeMCU8266. Pressing this button for more than 5-10sec will reset the WiFi configuration
 
 ESPWifiConfig WifiConfig("myESP", 80, Config_reset_btn, false, "fallback_wifi", "fallback_pass", debug_true);
 
