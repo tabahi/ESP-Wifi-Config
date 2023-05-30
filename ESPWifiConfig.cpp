@@ -81,6 +81,7 @@ int ESPWifiConfig::initialize(void)
 		strcat(this_ap, "_");
 		strcat(this_ap, String(getmacID()).c_str());
 		
+		ESP_debug("AP Wifi name:");
 		ESP_debug(this_ap);
 		//if(setting[WEB_PASS].value[0]!='\0') WiFi.softAP(this_ap, setting[WEB_PASS].value);
 		WiFi.softAP(this_ap);
@@ -99,9 +100,9 @@ int ESPWifiConfig::initialize(void)
 		ESP_IP_addresss += String(ESP_IP[3]);
 		ESP_debug(ESP_IP_addresss);
 		//wifiscan();
+		ESP_debug("Setup URL:\r\nhttp://" + ESP_IP_addresss);
 	}
 	
-	ESP_debug("Setup:\r\nhttp://" + ESP_IP_addresss);
 	// Setup MDNS responder
 	if (!MDNS.begin(sys_name))
 	{
@@ -109,12 +110,17 @@ int ESPWifiConfig::initialize(void)
 	}
 	else
 	{
-	  ESP_debug("Goto:\r\nhttp://" +String(sys_name) + ".local");
+	  ESP_debug("Setup URL:\r\nhttp://" +String(sys_name) + ".local");
 	  // Add service to MDNS-SD
 	  MDNS.addService("http", "tcp", 80);
 	}
 	
 	return ESP_mode;
+}
+
+String ESPWifiConfig::get_AP_name()
+{
+	return String(sys_name)+"_"+String(getmacID());
 }
 
 int ESPWifiConfig::goWild(void)

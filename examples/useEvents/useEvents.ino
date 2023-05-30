@@ -21,7 +21,7 @@
 
 #include <ESPWifiConfig.h>
 
-int ServerPort = 80;
+int ServerPort = 80;      //port number for HTTP admin server when in access point (AP) mode.
 int Config_reset_btn = 0; //GPIO0, D0 on Node32, D3 on NodeMCU8266. Pressing this button for more than 5-10sec will reset the WiFi configuration
 
 boolean debug = true; //prints info on Serial when true
@@ -55,10 +55,15 @@ void setup()
 
   WifiConfig.print_settings();
 
-  //if (WifiConfig.ESP_mode == AP_MODE) //uncomment this line to turn on HTTP web server only during AP_MODE
+  if (WifiConfig.ESP_mode == AP_MODE) //uncomment this line to turn on HTTP web server only during AP_MODE
+  {
+    Serial.println("ESP is running in AP MODE");
+    Serial.print("Connect to it's Wifi named: ");
+    Serial.println(WifiConfig.get_AP_name());
+  }
   WifiConfig.Start_HTTP_Server(600000);//HTTP web server remains active for first 10 minutes (600000 ms) in CLIENT_MODE. Set 0 to run it perpetually. It's perpetually ON in AP_MODE.
 
-  WifiConfig.ESP_debug("Hello");  //this message will show on the Setup web page
+  WifiConfig.ESP_debug("Hello");  //this message will show on the Setup web page and on Serial Monitor (if debug = true)
 }
 
 
@@ -102,7 +107,7 @@ void loop()
         Serial.print(WiFi.RSSI()); //in dB
         Serial.print("\tIP: ");
         Serial.println(WiFi.localIP());
-        delay(1000);
+        delay(5000);
       }
       else
       {
@@ -142,11 +147,12 @@ void loop()
 void registerEvents()
 {
   WiFi.onEvent(WiFiEvent);
-  WiFi.onEvent(WiFiGotIP, WiFiEvent_t::SYSTEM_EVENT_STA_GOT_IP);
+  WiFi.onEvent(WiFiGotIP, WiFiEvent_t::ARDUINO_EVENT_WIFI_STA_GOT_IP);
   WiFiEventId_t eventID = WiFi.onEvent([](WiFiEvent_t event, WiFiEventInfo_t info) {
     Serial.print("WiFi lost connection. Reason: ");
-    Serial.println(info.disconnected.reason);
-  }, WiFiEvent_t::SYSTEM_EVENT_STA_DISCONNECTED);
+    
+    Serial.println(info.wifi_sta_disconnected.reason); //can comment out if gives error
+  }, WiFiEvent_t::ARDUINO_EVENT_WIFI_AP_STADISCONNECTED);
 }
 
 void WiFiEvent(WiFiEvent_t event) //copied from Example: WiFiClientsEvents for ESP32

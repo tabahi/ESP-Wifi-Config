@@ -21,7 +21,7 @@
 
 #include <ESPWifiConfig.h>
 
-int ServerPort = 80;
+int ServerPort = 80;      //port number for HTTP admin server when in access point (AP) mode.
 int Config_reset_btn = 0; //GPIO0, D0 on Node32, D3 on NodeMCU8266. Pressing this button for more than 5-10sec will reset the WiFi configuration
 
 boolean debug = true; //prints info on Serial when true
@@ -49,16 +49,23 @@ void setup()
   Serial.println("Start");
   Serial.println(WiFi.macAddress());
 
+  
+  WifiConfig.print_settings();
+
   //AP_MODE is activared when there is no wifi configuration in EEPROM memory and the fallback wifi is not found during scan
   if (WifiConfig.initialize() == AP_MODE)
   {
     WifiConfig.Start_HTTP_Server(600000); //Start HTTP server when initialized in AP_MODE probably because configuration is not found, and fallback_wifi isn't in range
     //HTTP web server remains active for first 10 minutes (600000 ms) if it's switched into CLIENT_MODE. Set 0 to run it perpetually. It's perpetually ON in AP_MODE.
+
+    
+    Serial.println("ESP is running in AP MODE");
+    Serial.print("Connect to it's Wifi named: ");
+    Serial.println(WifiConfig.get_AP_name());
   }
 
   //WifiConfig.ESP_reset_settings(); //use this to reset the Configuration in EEPROM
 
-  WifiConfig.print_settings();
 
   WifiConfig.ESP_debug("Hello");  //this message will show on the Setup web page
 }
@@ -81,7 +88,7 @@ void loop()
     Serial.print(WiFi.RSSI()); //in dB
     Serial.print("\tIP: ");
     Serial.println(WiFi.localIP());
-    delay(1000);
+    delay(5000);
   }
   else
   {
@@ -99,9 +106,9 @@ void loop()
 boolean ensure_wifi_connectivity(unsigned long no_conn_go_wild_delay, unsigned long no_conn_restart_delay)
 {
   //Access point mode
-  if (WifiConfig.ESP_mode == AP_MODE)  //Can't connect to internet while in this mode
+  if (WifiConfig.ESP_mode == AP_MODE)  //Access point mode. Can't connect to internet while in this mode
   {
-    //Connect to the AP wifi name myESP_XXXXXX
+    //Use your phone wifi to connect to the AP wifi name myESP_XXXXXX then go to URL http://192.168.1.1 for settings
   
 
     //Added feature: Go wild after NO CONNECTION for a while
@@ -129,13 +136,15 @@ boolean ensure_wifi_connectivity(unsigned long no_conn_go_wild_delay, unsigned l
         
         reconnect_delay = 30000; //10s by default
 
-        if ((millis() - last_wifi_connect_time) > no_conn_restart_delay) //Restart after 1 hour of no connection
+        if ((millis() - last_wifi_connect_time) > no_conn_restart_delay)
         {
+          //Restart after 1 hour of no connection
           Serial.println("Restarting...");
           ESP.restart();          
         }
-        else if ((millis() - last_wifi_connect_time) > no_conn_go_wild_delay) //Try to connect to password-less WiFis after 1/2 hour of NO Wifi
+        else if ((millis() - last_wifi_connect_time) > no_conn_go_wild_delay)
         {
+           //Try to connect to password-less WiFis after 1/2 hour of NO Wifi
           if (WifiConfig.goWild() > 0)
           {
             // found some NEW unsecure WiFis. If they were found in previous scans, then it will still be zero

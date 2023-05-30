@@ -104,6 +104,7 @@ class ESPWifiConfig
 		};
 		IPAddress ESP_IP;
 		const byte DNS_PORT = 53;
+		String get_AP_name();
 		IPAddress apIP = {192, 168, 1, 1};
 		DNSServer dnsServer;
 		int ESP_mode = 0;
