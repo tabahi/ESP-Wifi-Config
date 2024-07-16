@@ -34,7 +34,7 @@ int ESPWifiConfig::initialize(void)
 		ESP_save_settings();
 	}
 	
-	if(((setting[WIFI_SSID].value[0] >= 48) && (setting[WIFI_SSID].value[0] <= 122)) || ((fallback_ssid[0] >= 48) && (fallback_ssid[0] <= 122) && (fallback_ssid_available)))	//ascii 0
+	if(((setting[WIFI_SSID].value[0] >= 32) && (setting[WIFI_SSID].value[0] <= 122)) || ((fallback_ssid[0] >= 32) && (fallback_ssid[0] <= 122) && (fallback_ssid_available)))	//ascii 0
 	{
 		ESP_mode = CLIENT_MODE;
 		wifi_connected = false;
@@ -43,7 +43,7 @@ int ESPWifiConfig::initialize(void)
 		WiFi.mode(WIFI_STA);
 		
 		
-		if ((setting[WIFI_SSID].value[0] >= 48) && (setting[WIFI_SSID].value[0] <= 122))
+		if ((setting[WIFI_SSID].value[0] >= 32) && (setting[WIFI_SSID].value[0] <= 126))
 		{
 			ESP_debug(F("Configured WiFi:"));
 			ESP_debug(setting[WIFI_SSID].value);
@@ -53,7 +53,7 @@ int ESPWifiConfig::initialize(void)
 			if(!known_ssid_available) { ESP_debug(F("Not found:")); ESP_debug(setting[WIFI_SSID].value);}
 		}
 		
-		if((fallback_ssid[0] >= 48) && (fallback_ssid[0] <= 122) )
+		if((fallback_ssid[0] >= 32) && (fallback_ssid[0] <= 126) )
 		{
 			ESP_debug(F("Fallback:"));
 			ESP_debug(fallback_ssid);
@@ -100,7 +100,7 @@ int ESPWifiConfig::initialize(void)
 		ESP_IP_addresss += String(ESP_IP[3]);
 		ESP_debug(ESP_IP_addresss);
 		//wifiscan();
-		ESP_debug("Setup URL:\r\nhttp://" + ESP_IP_addresss);
+		ESP_debug("Setup URL:\r\nhttp://" + ESP_IP_addresss + ":" + String(http_port));
 	}
 	
 	// Setup MDNS responder
@@ -110,9 +110,9 @@ int ESPWifiConfig::initialize(void)
 	}
 	else
 	{
-	  ESP_debug("Setup URL:\r\nhttp://" +String(sys_name) + ".local");
+	  ESP_debug("Setup URL:\r\nhttp://" +String(sys_name) + ".local:" + String(http_port));
 	  // Add service to MDNS-SD
-	  MDNS.addService("http", "tcp", 80);
+	  MDNS.addService("http", "tcp", http_port);
 	}
 	
 	return ESP_mode;
@@ -234,12 +234,12 @@ void ESPWifiConfig::wifiscan()
 			Serial.printf("%s", (WiFi.encryptionType(i) == ENC_TYPE_NONE) ? " " : "*");
 			Serial.printf("\n");
 			*/
-			if((setting[WIFI_SSID].value[0] >= 48) && (setting[WIFI_SSID].value[0] <= 122))	//ascii 0
+			if((setting[WIFI_SSID].value[0] >= 32) && (setting[WIFI_SSID].value[0] <= 126))	//ascii 0
 			{
 				if( WiFi.SSID(i).indexOf(setting[WIFI_SSID].value)>=0)
 					known_ssid_available = true;
 			}
-			if((fallback_ssid[0] >= 48) && (fallback_ssid[0] <= 122) )
+			if((fallback_ssid[0] >= 32) && (fallback_ssid[0] <= 126) )
 			{
 				if( WiFi.SSID(i).indexOf(fallback_ssid)>=0)
 					fallback_ssid_available = true;
@@ -508,7 +508,7 @@ void ESPWifiConfig::handle_read_data(void)
 	content += F("\",\"MAC\":\"");
 	content += String(getmacID());
 	content += F("\",\"Port\":\"");
-	content += "80";
+	content += String(http_port);
 	content += F("\",\"System\":\"");
 	content += sys_name;
 	content += "\"";
@@ -736,14 +736,14 @@ void ESPWifiConfig::ESP_read_settings()
 	//Serial.print(setting[i].name);
 	
 	uint8_t first_char = EEPROM.read(setting[i].addr);
-	if( ((first_char>=48) && ( first_char<=122)) || (i==WIFI_SSID) || (i==WIFI_PASS))
+	if( ((first_char>=32) && ( first_char<=126)) || (i==WIFI_SSID) || (i==WIFI_PASS))
 	{
 		//Serial.print("=");
 		uint8_t ix = 0;
 		for (uint16_t k = setting[i].addr; k < (VALUE_MAX_SIZE + setting[i].addr); k++)
 		{
 		  char chr = (char)EEPROM.read(k);
-		  if((chr >= 48) && (chr <= 122))
+		  if((chr >= 32) && (chr <= 126))
 		  {
 			  setting[i].value[ix] = chr;
 			  //Serial.print(setting[i].value[ix]);

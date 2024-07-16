@@ -57,7 +57,7 @@ enum settingsIndex {
 };
 
 #define NAME_MAX_SIZE 10
-#define VALUE_MAX_SIZE 20
+#define VALUE_MAX_SIZE 30
 
 class SettingsObject
 {
@@ -84,7 +84,7 @@ class ESPWifiConfig
 	boolean show_debug = false;
 	
 	int reset_btn = 0;
-	
+	int http_port = 80;
 #if BOARD_ESP==32
 	WebServer server;
 #elif BOARD_ESP==8266
@@ -101,6 +101,7 @@ class ESPWifiConfig
 			fallback_ssid = fallback_ssidx;
 			fallback_ssid_pass = fallback_ssid_passx;
 			show_debug = debug;
+			http_port = port;
 		};
 		IPAddress ESP_IP;
 		const byte DNS_PORT = 53;
