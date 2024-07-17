@@ -3,7 +3,7 @@
 
 
 
-<img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/7.png" alt="drawing" width="250"/>
+<img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/7.png" alt="drawing" width="500"/>
 
 
 
