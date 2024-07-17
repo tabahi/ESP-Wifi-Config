@@ -6,7 +6,8 @@
 int ESPWifiConfig::initialize(void)
 {
 	
-	pinMode(reset_btn, INPUT_PULLUP);
+	if (reset_btn>=0)
+		pinMode(reset_btn, INPUT_PULLUP);
 	debug_log.reserve(50);
 	
 	WiFi.persistent(false);
@@ -280,7 +281,7 @@ void ESPWifiConfig::handle(unsigned long reconnect_delay)
 	if((ESP_mode != AP_MODE) && (((millis() - last_try_wifi_connect) > reconnect_delay) || (wifi_connected &&(WiFi.status() != WL_CONNECTED))))
 	{
 		
-		if(is_reset_pressed(reset_btn))
+		if((reset_btn>=0) && (is_reset_pressed(reset_btn)))
 		{
 			reset_pressed_count++;
 			if(reset_pressed_count>=2)

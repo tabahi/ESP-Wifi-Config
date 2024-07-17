@@ -9,7 +9,7 @@
     Add your own button mechanism on 'Config_reset_btn' pin. It's not the power reset button.
     or use WifiConfig.ESP_reset_settings(); to reset config memory, then initialize() again.
 
-    ESPWifiConfig doesn't use SPIFF. It uses virtual EEPROM addresses 0-80 (flash) , which can be lost if compiler configurations are changed during update
+    ESPWifiConfig doesn't use SPIFF. It uses virtual EEPROM addresses 0-120 (flash) , which can be lost if compiler configurations are changed during update
 
     In this code, ESP goes wild and tries to connect to password-less nearby WiFi after 30 minutes of no connection in both the AP_MODE and CLIENT_MODE
     If there is still no WiFi connection then it will automatically Restart.
@@ -21,8 +21,8 @@
 
 #include <ESPWifiConfig.h>
 
-int ServerPort = 80;      //port number for HTTP admin server when in access point (AP) mode.
-int Config_reset_btn = 0; //GPIO0, D0 on Node32, D3 on NodeMCU8266. Pressing this button for more than 5-10sec will reset the WiFi configuration
+int ServerPort = 8080;      //port number for HTTP admin server when in access point (AP) mode.
+int Config_reset_btn = 0; //GPIO0, D0 on Node32, D3 on NodeMCU8266. Pressing this button for more than 5-10sec will reset the WiFi configuration. Set to -1 for no reset button pin.
 
 boolean debug = true; //prints info on Serial when true
 
@@ -41,6 +41,7 @@ ESPWifiConfig WifiConfig("myESP", ServerPort, Config_reset_btn, false, "fallback
 unsigned long last_wifi_connect_time = 0;
 unsigned long reconnect_delay = 10000;
 
+boolean ensure_wifi_connectivity(unsigned long no_conn_go_wild_delay, unsigned long no_conn_restart_delay);
 
 void setup()
 {
@@ -50,19 +51,24 @@ void setup()
   Serial.println(WiFi.macAddress());
 
   
-  WifiConfig.print_settings();
 
   //AP_MODE is activared when there is no wifi configuration in EEPROM memory and the fallback wifi is not found during scan
   if (WifiConfig.initialize() == AP_MODE)
   {
     WifiConfig.Start_HTTP_Server(600000); //Start HTTP server when initialized in AP_MODE probably because configuration is not found, and fallback_wifi isn't in range
-    //HTTP web server remains active for first 10 minutes (600000 ms) if it's switched into CLIENT_MODE. Set 0 to run it perpetually. It's perpetually ON in AP_MODE.
+    //HTTP web server remains active for first 10 minutes (600000 ms) after it's switched into CLIENT_MODE. Set 0 to run it perpetually. It's perpetually ON in AP_MODE.
 
     
     Serial.println("ESP is running in AP MODE");
     Serial.print("Connect to it's Wifi named: ");
     Serial.println(WifiConfig.get_AP_name());
   }
+  else //client mode
+  {
+    WifiConfig.Start_HTTP_Server(300000); //keep settings server active for 5 minutes (300 sec)
+  }
+  WifiConfig.print_settings();
+    
 
   //WifiConfig.ESP_reset_settings(); //use this to reset the Configuration in EEPROM
 
@@ -78,7 +84,7 @@ void loop()
   WifiConfig.handle(reconnect_delay); //non-blocking function, 'reconnect_delay' is an interval for reconnection if disconnected
 
 
-  if (ensure_wifi_connectivity(NO_CONNECTION_GO_WILD_DELAY, NO_CONNECTION_RESTART_DELAY))
+  if (ensure_wifi_connectivity(NO_CONNECTION_GO_WILD_DELAY, NO_CONNECTION_RESTART_DELAY)) //see below
   {
     //do something when wifi is connected
     Serial.print(WiFi.status());
@@ -147,8 +153,13 @@ boolean ensure_wifi_connectivity(unsigned long no_conn_go_wild_delay, unsigned l
            //Try to connect to password-less WiFis after 1/2 hour of NO Wifi
           if (WifiConfig.goWild() > 0)
           {
-            // found some NEW unsecure WiFis. If they were found in previous scans, then it will still be zero
+            // found some NEW insecure WiFis. If they were not found in previous scans, then it will still return zero. Use WifiConfig.wifiscan(); to scan again.
             Serial.println("Connecting to open WiFi");
+          }
+          else
+          {
+            WifiConfig.wifiscan();
+            delay(20000); //give some time for scan to finish
           }
         }
       }

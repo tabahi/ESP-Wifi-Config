@@ -83,7 +83,7 @@ class ESPWifiConfig
 	boolean known_ssid_available = false;
 	boolean show_debug = false;
 	
-	int reset_btn = 0;
+	int reset_btn = -1;
 	int http_port = 80;
 #if BOARD_ESP==32
 	WebServer server;
@@ -128,6 +128,7 @@ class ESPWifiConfig
 		void handle(unsigned long);
 		void Start_HTTP_Server(unsigned long);
 		int goWild(void);
+		void wifiscan(void);
 		void ESP_debug(String);
 		String debug_log = "";
 		String input = "";
@@ -140,7 +141,6 @@ class ESPWifiConfig
 		void ESP_read_settings(void);
 		void ESP_save_settings(void);
 		int wifi_scan_count = 0;
-		void wifiscan(void);
 		boolean try_wifi_connect();
 		#if BOARD_ESP==32
 			WiFiMulti wifiMulti;
