@@ -1,6 +1,12 @@
 # ESP-Wifi-Config
  An arduino IDE library to easily manage/store WiFi credentials for ESP32 and ESP8266.
 
+
+
+<img src="https://raw.githubusercontent.com/tabahi/ESP-Wifi-Config/master/screenshots/7.png" alt="drawing" width="250"/>
+
+
+
 ## Usage
 
 - When WiFi settings are not configured and the fallback WiFi is not in range then ESP will start in AP_Mode (Access Point). Connect your PC/Phone's WiFi to the AP named ESP_XXXXX, then configure the WiFi settings
@@ -12,6 +18,8 @@ Default login: admin, pass_ESP
 
 
 - Use `WifiConfig.goWild()` to connect to any password-less WiFi in range. In the example, it's used as the last resort when the configured and fallback WiFis are not found. If there is still no WiFi connection then it will automatically Restart after an hour.
+
+
 
 
 
