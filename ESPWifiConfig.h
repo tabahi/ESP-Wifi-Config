@@ -31,7 +31,7 @@
 
 #include <EEPROM.h>
 #include <DNSServer.h>
-#include  "webpages\\define_vars.h"
+#include <webpages/define_vars.h>
 
 
 
